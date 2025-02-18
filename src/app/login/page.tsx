@@ -1,97 +1,99 @@
-"use client";
+"use client"
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+import { Button } from "@/components/ui/button"
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Input, PasswordInput } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
+
+import { FaGithub, FaDiscord } from "react-icons/fa";
+import Link from "next/link"
+
+const formSchema = z.object({
+    email: z.string().min(1, {
+
+        message: "Email is required",
+    }),
+    password: z.string().min(1, {
+        message: "Password is required",
+    }),
+})
 
 export default function LoginPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const response = await fetch(`http://localhost:8000/api/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
-
-            if (response.ok) {
-                router.push('/dashboard');
-            } else {
-                const data = await response.json();
-                throw new Error(data.message || 'Login failed');
-            }
-        } catch (error) {
-            console.error('Login error:', error);
-            alert('Login failed. Please try again.');
-        }
-    };
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    })
+  
+    const onSubmit = async (data: z.infer<typeof formSchema>) => {
+        console.log(data)
+    }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#0a0a12]">
-            <div className="p-10 bg-[#11111a] rounded-2xl shadow-2xl w-full max-w-md">
-                <h1 className="text-4xl font-extrabold text-white mb-8 text-center">
-                    Welcome Back
-                </h1>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-gray-300 mb-2">
-                            Email
-                        </label>
-                        <div className="flex items-center bg-[#1a1a2e] rounded-lg px-4 py-3">
-                            <FaUser className="text-purple-400 mr-3" />
-                            <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Enter your email"
-                                className="flex-1 bg-transparent outline-none text-white placeholder-gray-500"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-semibold text-gray-300 mb-2">
-                            Password
-                        </label>
-                        <div className="flex items-center bg-[#1a1a2e] rounded-lg px-4 py-3 relative">
-                            <FaLock className="text-purple-400 mr-3" />
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Enter your password"
-                                className="flex-1 bg-transparent outline-none text-white placeholder-gray-500"
-                                required
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 text-purple-400"
-                            >
-                                {showPassword ? <FaEyeSlash /> : <FaEye />}
-                            </button>
-                        </div>
-                    </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-gradient-to-r from-purple-600 to-blue-500 text-white py-3 rounded-xl text-lg font-semibold hover:from-purple-700 hover:to-blue-600 transition-all duration-300"
-                    >
-                        Sign In
-                    </button>
-                </form>
-                <p className="text-gray-400 text-sm mt-6 text-center">
-                    Don't have an account? <a href="/register" className="text-purple-400 hover:underline">Sign Up</a>
-                </p>
+        <div className="flex min-h-screen items-center justify-center">
+            <div className="bg-slate-900 p-8 rounded-lg">
+                <h1 className="text-center font-bold text-xl pb-4">Welcome back</h1>
+
+
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem className="">
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} type="email" />
+                                    </FormControl>
+                                    <FormMessage>{form.formState.errors.email?.message}</FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <PasswordInput {...field}/>
+                                    </FormControl>
+                                    <FormMessage>{form.formState.errors.password?.message}</FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <FormDescription className="pt-5 gap-3">
+                            <Button type="submit" className="w-full">Login</Button>
+
+                            <Separator className="mt-3 mb-4 " />
+                            <p className="justify-center flex">or continue with</p>
+                            <div className="p-4 flex gap-6 items-center justify-center">
+                                <Link href={`${process.env.NEXT_PUBLIC_DEV_BACKEND_URL}/auth/github`}>
+                                    <FaGithub size={24} />
+                                </Link>
+                                <Link href={`${process.env.NEXT_PUBLIC_DEV_BACKEND_URL}/auth/discord`}>
+                                    <FaDiscord size={24} />
+                                </Link>
+                            </div>
+                        </FormDescription>
+                    </form>
+                </Form>
             </div>
         </div>
-    );
+    )
 }
