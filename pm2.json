@@ -1,7 +1,7 @@
 {
     "apps": [
         {
-            "name": "cfc-forum-api",
+            "name": "cfc-forum",
             "script": "npm",
             "args": "run start",
             "cwd": "/home/himanshu/cfc-forum",
