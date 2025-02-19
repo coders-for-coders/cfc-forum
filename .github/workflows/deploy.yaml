@@ -48,7 +48,7 @@ jobs:
             if pm2 list | grep -q "cfc-forum"; then
               pm2 restart cfc-forum
             else
-              pm2 start npm --name "cfc-forum" -- start -- -p 3000
+              pm2 start npm --name "cfc-forum" -- start -- -p 3001
             fi
             pm2 save
             sudo systemctl reload nginx
