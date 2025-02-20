@@ -27,7 +27,7 @@ interface QuestionData {
     updatedAt: Date
 }
 
-export default function Home() {
+export default function Questions() {
     const [questions, setQuestions] = useState<QuestionData[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -51,21 +51,27 @@ export default function Home() {
     }
 
     return (
-        <div className="container mx-auto mt-10 px-4 sm:px-6 lg:px-8">
-            {questions.map((question, index) => (
-                <Question
-                    id={question._id}
-                    votes={question.votes}
-                    answers={question.answers}
-                    views={question.views}
-                    title={question.title}
-                    description={question.description}
-                    tags={question.tags}
-                    author={question.author}
-                    createdAt={question.createdAt}
-                    updatedAt={question.updatedAt}
-                />
-            ))}
-        </div>
+        <>
+
+            <div className="container mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+                <div className="my-4 text-xl">
+                    <h1>Latest Questions</h1>
+                </div>
+                {questions.map((question, index) => (
+                    <Question
+                        id={question._id}
+                        votes={question.votes}
+                        answers={question.answers}
+                        views={question.views}
+                        title={question.title}
+                        description={question.description}
+                        tags={question.tags}
+                        author={question.author}
+                        createdAt={question.createdAt}
+                        updatedAt={question.updatedAt}
+                    />
+                ))}
+            </div>
+        </>
     );
 }
