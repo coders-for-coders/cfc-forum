@@ -31,12 +31,12 @@ jobs:
             eval $(ssh-agent -s)
             ssh-add ~/.ssh/github
             
-            if [ ! -d "~/cfc-forum" ]; then
+            if [ ! -d "~/cfc-qna" ]; then
              
               git clone git@github.com:coders-for-coders/cfc-qna.git ~/cfc-qna
             fi
 
-            cd ~/cfc-forum
+            cd ~/cfc-qna
             git pull
 
             source ~/.nvm/nvm.sh
