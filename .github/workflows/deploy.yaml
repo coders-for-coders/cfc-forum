@@ -33,7 +33,7 @@ jobs:
             
             if [ ! -d "~/cfc-forum" ]; then
              
-              git clone git@github.com:coders-for-coders/cfc-forum.git ~/cfc-forum
+              git clone git@github.com:coders-for-coders/cfc-qna.git ~/cfc-qna
             fi
 
             cd ~/cfc-forum
@@ -45,10 +45,10 @@ jobs:
             npm install
             npm run build
 
-            if pm2 list | grep -q "cfc-forum"; then
-              pm2 restart cfc-forum
+            if pm2 list | grep -q "cfc-qna"; then
+              pm2 restart cfc-qna
             else
-              pm2 start npm --name "cfc-forum" -- start -- -p 3001
+              pm2 start npm --name "cfc-qna" -- start -- -p 3001
             fi
             pm2 save
             sudo systemctl reload nginx
