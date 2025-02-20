@@ -59,6 +59,7 @@ export default function Questions() {
                 </div>
                 {questions.map((question, index) => (
                     <Question
+                        key={index}
                         id={question._id}
                         votes={question.votes}
                         answers={question.answers}

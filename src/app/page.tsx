@@ -54,6 +54,7 @@ export default function Home() {
         <div className="container mx-auto mt-10 px-4 sm:px-6 lg:px-8">
             {questions.map((question, index) => (
                 <Question
+                    key={index}
                     id={question._id}
                     votes={question.votes}
                     answers={question.answers}
