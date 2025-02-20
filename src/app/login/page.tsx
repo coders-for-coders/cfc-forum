@@ -85,12 +85,12 @@ export default function LoginPage() {
                             <div className="p-4 flex gap-6 items-center justify-center">
                                 <Link href={`${process.env.NODE_ENV === 'production' 
                                     ? process.env.NEXT_PUBLIC_PROD_BACKEND_URL 
-                                    : process.env.NEXT_PUBLIC_DEV_BACKEND_URL}/auth/github`}>
+                                    : process.env.NEXT_PUBLIC_DEV_BACKEND_URL}/api/auth/github`}>
                                     <FaGithub size={24} />
                                 </Link>
                                 <Link href={`${process.env.NODE_ENV === 'production'
                                     ? process.env.NEXT_PUBLIC_PROD_BACKEND_URL
-                                    : process.env.NEXT_PUBLIC_DEV_BACKEND_URL}/auth/discord`}>
+                                    : process.env.NEXT_PUBLIC_DEV_BACKEND_URL}/api/auth/discord`}>
                                     <FaDiscord size={24} />
                                 </Link>
                             </div>
